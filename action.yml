@@ -1,0 +1,97 @@
+name: 'waypoint'
+description: 'Deploy Docker images to remote servers via SSH'
+author: 'waycambas'
+
+inputs:
+  mode:
+    description: "Execution mode: ssh or deploy"
+    required: false
+    default: "deploy"
+
+  host:
+    description: "Target SSH host"
+    required: true
+
+  username:
+    description: "Target SSH username"
+    required: true
+
+  key:
+    description: "Target SSH private key"
+    required: true
+
+  port:
+    description: "Target SSH port"
+    required: false
+    default: "22"
+
+  proxy_host:
+    description: "SSH proxy/jump host"
+    required: false
+
+  proxy_username:
+    description: "SSH proxy username"
+    required: false
+
+  proxy_key:
+    description: "SSH proxy private key"
+    required: false
+
+  proxy_port:
+    description: "SSH proxy port"
+    required: false
+    default: "22"
+
+  remote_command:
+    description: "Remote command for ssh mode"
+    required: false
+
+  image:
+    description: "Docker image"
+    required: false
+
+  tag:
+    description: "Docker image tag"
+    required: false
+
+  container:
+    description: "Docker container name"
+    required: false
+
+  registry:
+    description: "Docker registry"
+    required: false
+    default: "ghcr.io"
+
+  registry_username:
+    description: "Docker registry username"
+    required: false
+
+  registry_token:
+    description: "Docker registry token"
+    required: false
+
+  env_file:
+    description: "Application environment file content"
+    required: false
+
+  ports:
+    description: "Docker port mappings"
+    required: false
+
+  container_command:
+    description: "Container startup command"
+    required: false
+
+  healthcheck:
+    description: "Health check URL"
+    required: false
+
+  command_timeout:
+    description: "Remote command timeout"
+    required: false
+    default: "30m"
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
