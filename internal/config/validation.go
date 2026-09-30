@@ -12,8 +12,8 @@ func (c *Config) Validate() error {
 	if c.Username == "" {
 		return fmt.Errorf("username is required")
 	}
-	if c.Key == "" {
-		return fmt.Errorf("key is required")
+	if c.Key == "" && c.Password == "" {
+		return fmt.Errorf("either key or password is required")
 	}
 
 	if c.Mode == "ssh" {

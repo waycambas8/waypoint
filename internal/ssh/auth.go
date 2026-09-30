@@ -25,3 +25,14 @@ func parsePrivateKey(privateKey string) (ssh.AuthMethod, error) {
 
 	return ssh.PublicKeys(signer), nil
 }
+
+// GetAuthMethod returns the appropriate ssh.AuthMethod based on provided key or password.
+func GetAuthMethod(key, password string) (ssh.AuthMethod, error) {
+	if key != "" {
+		return parsePrivateKey(key)
+	}
+	if password != "" {
+		return ssh.Password(password), nil
+	}
+	return nil, fmt.Errorf("neither key nor password provided")
+}

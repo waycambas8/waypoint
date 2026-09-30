@@ -16,9 +16,9 @@ type Client struct {
 
 // Connect establishes an SSH connection to a target host, optionally via a proxy.
 func Connect(cfg *config.Config) (*Client, error) {
-	targetAuth, err := parsePrivateKey(cfg.Key)
+	targetAuth, err := GetAuthMethod(cfg.Key, cfg.Password)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse target private key: %w", err)
+		return nil, fmt.Errorf("failed to get target auth method: %w", err)
 	}
 
 	targetConfig := &ssh.ClientConfig{
@@ -40,9 +40,9 @@ func Connect(cfg *config.Config) (*Client, error) {
 	}
 
 	// Connect via proxy
-	proxyAuth, err := parsePrivateKey(cfg.ProxyKey)
+	proxyAuth, err := GetAuthMethod(cfg.ProxyKey, cfg.ProxyPassword)
 	if err != nil {
-		return nil, fmt.Errorf("failed to parse proxy private key: %w", err)
+		return nil, fmt.Errorf("failed to get proxy auth method: %w", err)
 	}
 
 	proxyConfig := &ssh.ClientConfig{

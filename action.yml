@@ -18,7 +18,11 @@ inputs:
 
   key:
     description: "Target SSH private key"
-    required: true
+    required: false
+
+  password:
+    description: "Target SSH password"
+    required: false
 
   port:
     description: "Target SSH port"
@@ -35,6 +39,10 @@ inputs:
 
   proxy_key:
     description: "SSH proxy private key"
+    required: false
+
+  proxy_password:
+    description: "SSH proxy password"
     required: false
 
   proxy_port:

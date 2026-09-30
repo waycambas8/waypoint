@@ -11,12 +11,14 @@ type Config struct {
 	// SSH Target
 	Host     string
 	Username string
+	Password string
 	Key      string
 	Port     string
 
 	// SSH Proxy
 	ProxyHost     string
 	ProxyUsername string
+	ProxyPassword string
 	ProxyKey      string
 	ProxyPort     string
 
@@ -45,10 +47,12 @@ func LoadFromEnv() (*Config, error) {
 		Mode:             getEnvOrDefault("INPUT_MODE", "deploy"),
 		Host:             os.Getenv("INPUT_HOST"),
 		Username:         os.Getenv("INPUT_USERNAME"),
+		Password:         os.Getenv("INPUT_PASSWORD"),
 		Key:              os.Getenv("INPUT_KEY"),
 		Port:             getEnvOrDefault("INPUT_PORT", "22"),
 		ProxyHost:        os.Getenv("INPUT_PROXY_HOST"),
 		ProxyUsername:    os.Getenv("INPUT_PROXY_USERNAME"),
+		ProxyPassword:    os.Getenv("INPUT_PROXY_PASSWORD"),
 		ProxyKey:         os.Getenv("INPUT_PROXY_KEY"),
 		ProxyPort:        getEnvOrDefault("INPUT_PROXY_PORT", "22"),
 		RemoteCommand:    os.Getenv("INPUT_REMOTE_COMMAND"),
