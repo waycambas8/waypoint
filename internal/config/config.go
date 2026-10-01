@@ -39,6 +39,11 @@ type Config struct {
 
 	// Timeouts
 	CommandTimeout string
+
+	// Provisioning
+	InstallDeps     string
+	Domain          string
+	ProxyTargetPort string
 }
 
 // LoadFromEnv loads configuration from environment variables set by GitHub Actions.
@@ -67,6 +72,9 @@ func LoadFromEnv() (*Config, error) {
 		ContainerCommand: os.Getenv("INPUT_CONTAINER_COMMAND"),
 		HealthCheck:      os.Getenv("INPUT_HEALTHCHECK"),
 		CommandTimeout:   getEnvOrDefault("INPUT_COMMAND_TIMEOUT", "30m"),
+		InstallDeps:      getEnvOrDefault("INPUT_INSTALL_DEPS", "false"),
+		Domain:           os.Getenv("INPUT_DOMAIN"),
+		ProxyTargetPort:  os.Getenv("INPUT_PROXY_TARGET_PORT"),
 	}, nil
 }
 

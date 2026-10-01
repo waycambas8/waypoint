@@ -15,6 +15,12 @@ import (
 func Deploy(cfg *config.Config, client *ssh.Client) error {
 	dockerClient := docker.NewClient(client)
 
+	if cfg.InstallDeps == "true" {
+		if err := provisionDeps(client); err != nil {
+			return fmt.Errorf("failed to provision server dependencies: %w", err)
+		}
+	}
+
 	if cfg.RegistryUsername != "" && cfg.RegistryToken != "" {
 		logger.Info(fmt.Sprintf("Logging into Docker registry: %s", cfg.Registry))
 		if err := dockerClient.Login(cfg.Registry, cfg.RegistryUsername, cfg.RegistryToken); err != nil {
@@ -100,6 +106,18 @@ func Deploy(cfg *config.Config, client *ssh.Client) error {
 	if hasBackup {
 		logger.Info("Cleaning up backup container...")
 		dockerClient.RemoveContainer(backupContainer)
+	}
+
+	if cfg.Domain != "" {
+		targetPort := cfg.ProxyTargetPort
+		if targetPort == "" {
+			targetPort = "80" // Fallback default
+		}
+		if err := setupNginx(client, cfg.Domain, targetPort); err != nil {
+			logger.Error(fmt.Sprintf("Failed to setup Nginx proxy: %v", err))
+			// We don't rollback here because the app is running fine, just proxy failed
+			return fmt.Errorf("deployment succeeded but nginx configuration failed")
+		}
 	}
 
 	logger.Success("Deployment successful")

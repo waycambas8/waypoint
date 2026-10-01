@@ -50,6 +50,19 @@ inputs:
     required: false
     default: "22"
 
+  install_deps:
+    description: "Auto install Docker and Nginx if missing"
+    required: false
+    default: "false"
+
+  domain:
+    description: "Domain name for Nginx reverse proxy"
+    required: false
+
+  proxy_target_port:
+    description: "Container port to proxy (e.g. 3000)"
+    required: false
+
   remote_command:
     description: "Remote command for ssh mode"
     required: false
