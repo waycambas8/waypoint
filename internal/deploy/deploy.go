@@ -3,6 +3,7 @@ package deploy
 import (
 	"encoding/base64"
 	"fmt"
+	"strings"
 
 	"github.com/waycambas/waypoint/internal/config"
 	"github.com/waycambas/waypoint/internal/docker"
@@ -21,9 +22,11 @@ func Deploy(cfg *config.Config, client *ssh.Client) error {
 		}
 	}
 
-	fullImage := fmt.Sprintf("%s/%s", cfg.Registry, cfg.Image)
-	if cfg.Registry == "" || cfg.Registry == "docker.io" {
-		fullImage = cfg.Image
+	fullImage := cfg.Image
+	if cfg.Registry != "" && cfg.Registry != "docker.io" {
+		if !strings.HasPrefix(cfg.Image, cfg.Registry+"/") {
+			fullImage = fmt.Sprintf("%s/%s", cfg.Registry, cfg.Image)
+		}
 	}
 
 	logger.Info(fmt.Sprintf("Pulling image: %s:%s", fullImage, cfg.Tag))
