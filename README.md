@@ -17,7 +17,7 @@ It handles pulling images, zero-downtime-like deployments with backup containers
 
 ```yaml
 - name: Deploy
-  uses: waycambas8/waypoint@v1.1.0
+  uses: waycambas8/waypoint@v1.1.1
   with:
     host: ${{ secrets.SERVER_HOST }}
     username: ${{ secrets.SERVER_USERNAME }}
@@ -55,7 +55,7 @@ It handles pulling images, zero-downtime-like deployments with backup containers
 ### SSH Mode (Execute Remote Commands)
 ```yaml
 - name: Execute Remote Command
-  uses: waycambas8/waypoint@v1.1.0
+  uses: waycambas8/waypoint@v1.1.1
   with:
     mode: ssh
     host: ${{ secrets.SERVER_HOST }}
