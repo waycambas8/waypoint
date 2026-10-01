@@ -7,9 +7,9 @@ import (
 	"github.com/waycambas/waypoint/internal/ssh"
 )
 
-// provisionDeps checks and installs Docker and Nginx if they are missing.
-func provisionDeps(client *ssh.Client) error {
-	logger.Info("Checking dependencies (Docker, Nginx)...")
+// provisionDeps checks and installs Docker and conditionally Nginx if they are missing.
+func provisionDeps(client *ssh.Client, installNginx bool) error {
+	logger.Info("Checking dependencies (Docker)...")
 
 	script := `
 	set -e
@@ -24,7 +24,11 @@ func provisionDeps(client *ssh.Client) error {
 	else
 		echo "Docker is already installed."
 	fi
+	`
 
+	if installNginx {
+		logger.Info("Checking dependencies (Nginx)...")
+		script += `
 	# Install Nginx if missing
 	if ! command -v nginx &> /dev/null; then
 		echo "Installing Nginx..."
@@ -38,6 +42,7 @@ func provisionDeps(client *ssh.Client) error {
 		echo "Nginx is already installed."
 	fi
 	`
+	}
 
 	_, err := client.Execute(script)
 	if err != nil {

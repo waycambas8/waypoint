@@ -16,7 +16,7 @@ func Deploy(cfg *config.Config, client *ssh.Client) error {
 	dockerClient := docker.NewClient(client)
 
 	if cfg.InstallDeps == "true" {
-		if err := provisionDeps(client); err != nil {
+		if err := provisionDeps(client, cfg.Domain != ""); err != nil {
 			return fmt.Errorf("failed to provision server dependencies: %w", err)
 		}
 	}
